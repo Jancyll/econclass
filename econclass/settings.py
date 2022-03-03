@@ -13,9 +13,9 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='Public_Goods_Game_Demo',
-        display_name="Public goods game hw",
+        display_name="Public goods game hw version",
         app_sequence=['public_goods_hw'],
-        num_demo_participants=3,
+        num_demo_participants=4,
     ),
     dict(
         name='Public_Goods_Game',
