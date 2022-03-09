@@ -1,12 +1,24 @@
 {{ block title }}
-    This is the decision screen
+    Please allocate your contribution
 {{ endblock }}
 {{ block content }}
 
-
-    here is where i say what the subject needs to do
+    <p>
+        You have {{ C.ENDOWMENT }} tokens in your private account P.
+        You can decide how you would like to allocate the {{ C.ENDOWMENT }} between your private account P
+        and group account G.
+    </p>
+    <p>
+        For each token you put on your private account P, you will receive exactly one token.
+        For each token you put on the group account G, it will multiply by {{ C.MULTIPLIER }}.
+    </p>
+    <p>
+        The resulting amount of tokens on account G will be divided equally among four group members.
+        You will receive the payoff from both private account P and your share of the group account G.
+    </p>
 
     {{ formfields }}
+
     {{ next_button }}
 
 {{ endblock }}

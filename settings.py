@@ -13,9 +13,9 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='Public_Goods_Game_Demo',
-        display_name="Public goods game hw version",
+        display_name="Public goods game with norms",
         app_sequence=['public_goods_hw'],
-        num_demo_participants=4,
+        num_demo_participants=8,
     ),
     dict(
         name='Public_Goods_Game',
@@ -44,6 +44,7 @@ LANGUAGE_CODE = 'en'
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
+POINTS_CUSTOM_NAME = 'tokens'
 
 ROOMS = [
     dict(

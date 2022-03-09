@@ -16,9 +16,9 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = 4
     NUM_ROUNDS = 3
     # ENDOWMENT = cu(100)
-    ENDOWMENT = 100
+    ENDOWMENT = 20
     # MULTIPLIER = 1.8
-    MULTIPLIER = 1.8
+    MULTIPLIER = 1.6
 
 class Subsession(BaseSubsession):
     pass
@@ -31,7 +31,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     contribution = models.CurrencyField(
-        min=0, max=C.ENDOWMENT, label="How much will you contribute?"
+        min=0, max=C.ENDOWMENT, label="How much will you contribute to the group account?"
     )
     earnings = models.IntegerField()
     total_earnings = models.IntegerField()
@@ -50,11 +50,13 @@ def set_payoffs(group: Group):
     for p in players:
         group.total_contribution += group.total_contribution + p.contribution
 
-
     group.individual_share = group.total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
 
     for p in players:
         p.payoff = C.ENDOWMENT - p.contribution + group.individual_share
+
+    # for p in players:
+    #     p.remain = C.ENDOWMENT - p.contribution
 
 # group randomly
 def creating_session(subsession):
