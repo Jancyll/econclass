@@ -1,5 +1,11 @@
-{{ block title }}Results{{ endblock }}
+{{ block title }}Results in {{ endblock }}
 {{ block content }}
+
+    <p>
+        You are in Group {{ group.id_in_subsession }} this run,
+        and your Group ID is {{ player.id_in_group }}.
+
+    </p>
 
     <p>
         You started with an endowment of {{ C.ENDOWMENT }}

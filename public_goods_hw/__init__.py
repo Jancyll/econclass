@@ -42,13 +42,14 @@ def set_payoffs(group: Group):
     players = group.get_players()
     print('this is the list of players:', players)
 
-    # contributions = [p.contribution for p in players] # it creates one list for iteration
-    # print('this is the list of contributions:', contributions)
-    # group.total_contribution = sum(contributions)
+    contributions = [p.contribution for p in players] # it creates one list for iteration
+    print('this is the list of contributions:', contributions)
+    group.total_contribution = sum(contributions)
+    print('this is the group contributions:', group.total_contribution)
 
-    group.total_contribution = 0
-    for p in players:
-        group.total_contribution += group.total_contribution + p.contribution
+    # group.total_contribution = 0
+    # for p in players:
+    #     group.total_contribution += group.total_contribution + p.contribution
 
     group.individual_share = group.total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
 
