@@ -1,0 +1,20 @@
+
+{{ block title }}Task 1{{ endblock }}
+{{ block content }}
+
+    <p>
+        You have {{ C.ENDOWMENT }} tokens in your private account P.
+        You can decide how you would like to allocate the {{ C.ENDOWMENT }} tokens between your private account P
+        and group account G.
+    </p>
+
+
+    {{ formfields }}
+
+      <button name="OK" value="True" class="otree-btn-next btn btn-primary" >OK </button>
+
+    <p>
+    Please enter your unconditional contribution to the group account. Click "OK" when you are done.
+    </p>
+
+{{ endblock }}
