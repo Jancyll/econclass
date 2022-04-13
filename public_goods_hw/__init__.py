@@ -31,6 +31,8 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     total_contribution = models.IntegerField()
     individual_share = models.FloatField()
+    s1_total_contribution = models.IntegerField()
+    s1_individual_share = models.FloatField()
 
 
 class Player(BasePlayer):
@@ -127,6 +129,25 @@ def set_payoffs(subsession: Subsession):
         subsession.sum_contribution += g.total_contribution
 
 # FUNCTIONS
+
+def session1_payoffs(subsession: Subsession):
+    for group in subsession.get_groups():
+
+        players = group.get_players()
+        print('this is the list of players:', players)
+
+        group.s1_total_contribution = 0
+        for p in players:
+            group.s1_total_contribution += group.s1_total_contribution + p.unconditional_contribution
+
+        group.s1_individual_share = group.s1_total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
+
+        for p in players:
+            p.payoff = C.ENDOWMENT - p.unconditional_contribution + group.s1_individual_share
+
+    # for g in subsession.get_groups():
+    #     subsession.sum_contribution += g.total_contribution
+
 # def session1_payoffs(group: Group):
 #     players = group.get_players()
 #     print('this is the list of players:', players)
@@ -195,9 +216,9 @@ class Contribution_2(Page):
 #         import random
 #         chosen_player = random.choice(player.id_in_group)
 
-# class s1_ResultsWaitPage(WaitPage):
-#     wait_for_all_groups = True
-#     after_all_players_arrive = session1_payoffs
+class s1_ResultsWaitPage(WaitPage):
+    wait_for_all_groups = True
+    after_all_players_arrive = session1_payoffs
 
 class ResultsWaitPage(WaitPage):
     wait_for_all_groups = True
@@ -213,6 +234,7 @@ class ShuffleWaitPage(WaitPage):
         subsession.group_randomly()
 
 
+
 class Results(Page):
     pass
 
@@ -222,6 +244,9 @@ class Introduction(Page):
 class Introduction1(Page):
     pass
 
+class Results1(Page):
+    pass
 
 
-page_sequence = [Introduction, Control_question, Introduction1, Contribution_1, Contribution_2, MyPage, ResultsWaitPage, Results]
+page_sequence = [Introduction, Control_question, Introduction1, Contribution_1, Contribution_2, s1_ResultsWaitPage, Results1,
+                 MyPage, ResultsWaitPage, Results]
