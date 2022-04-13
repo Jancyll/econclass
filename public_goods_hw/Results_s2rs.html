@@ -1,0 +1,20 @@
+{{ block title }}Results {{ endblock }}
+{{ block content }}
+
+
+    <p>
+        You started with an endowment of {{ C.ENDOWMENT }} tokens this period,
+        and your contribution to the project is {{ player.s2r2_contribution }} tokens.
+
+    </p>
+    <p>
+        Your group contributed {{ group.s2r2_total_contribution }} tokens,
+        resulting in an individual share of {{ group.s2r2_individual_share }} tokens.
+    </p>
+    <p>
+        Your payoff in this period is {{ player.payoff }}.
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}

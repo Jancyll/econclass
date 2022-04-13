@@ -13,7 +13,7 @@ A public good game:
 
 class C(BaseConstants):
     NAME_IN_URL = 'public_goods_hw'
-    PLAYERS_PER_GROUP = 3
+    PLAYERS_PER_GROUP = 4
     NUM_ROUNDS = 1
     # ENDOWMENT = cu(100)
     ENDOWMENT = 20
@@ -22,18 +22,14 @@ class C(BaseConstants):
 
 
 class Subsession(BaseSubsession):
-    sum_contribution = models.IntegerField(
-        initial=0
-    )
-    s1_sum_contribution = models.IntegerField(
-        initial=0
-    )
-    s2_run1_sum_contribution = models.IntegerField(
-        initial=0
-    )
+    sum_contribution = models.IntegerField(initial=0)
+    s1_sum_contribution = models.IntegerField(initial=0)
+    s2_run1_sum_contribution = models.IntegerField(initial=0)
     mean_contribution = models.FloatField()
     s1_mean_contribution = models.FloatField()
     s2_run1_mean_contribution = models.FloatField()
+    s2r2_sum_contribution = models.IntegerField(initial=0)
+    s2r2_mean_contribution = models.FloatField()
 
 
 class Group(BaseGroup):
@@ -41,6 +37,12 @@ class Group(BaseGroup):
     individual_share = models.FloatField()
     s1_total_contribution = models.IntegerField()
     s1_individual_share = models.FloatField()
+    s2_run1_total_contribution = models.IntegerField()
+    s2_run1_individual_share = models.FloatField()
+    s2r2_total_contribution = models.IntegerField()
+    s2r2_individual_share = models.FloatField()
+    s2r3_total_contribution = models.IntegerField()
+    s2r3_individual_share = models.FloatField()
 
 
 class Player(BasePlayer):
@@ -109,11 +111,21 @@ class Player(BasePlayer):
     s2_contribution_3 = models.IntegerField(
         min=0, max=C.ENDOWMENT, label="How much will you contribute to the project?"
     )
+    s2r2_contribution = models.IntegerField(
+        min=0, max=C.ENDOWMENT, label="How much will you contribute to the project?"
+    )
+    s2r3_contribution = models.IntegerField(
+        min=0, max=C.ENDOWMENT, label="How much will you contribute to the project?"
+    )
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT, label="How much will you contribute to the group account?"
     )
     earnings = models.IntegerField()
     total_earnings = models.IntegerField()
+    s1_payoff = models.CurrencyField()
+    s2_run1_payoff = models.CurrencyField()
+    s2r2_payoff = models.CurrencyField()
+    s2r3_payoff = models.CurrencyField()
     # status = models.IntegerField()
 
 #FUNCTIONS
@@ -149,14 +161,20 @@ def session1_payoffs(subsession: Subsession):
         players = group.get_players()
         print('this is the list of players:', players)
 
-        group.s1_total_contribution = 0
-        for p in players:
-            group.s1_total_contribution += group.s1_total_contribution + p.unconditional_contribution
+        contributions = [p.unconditional_contribution for p in players] # it creates one list for iteration
+        print('this is the list of contributions:', contributions)
+        group.s1_total_contribution = sum(contributions)
+        print('this is the group contributions:', group.s1_total_contribution)
+
+        # group.s1_total_contribution = 0
+        # for p in players:
+        #     group.s1_total_contribution += group.s1_total_contribution + p.unconditional_contribution
 
         group.s1_individual_share = group.s1_total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
 
         for p in players:
             p.payoff = C.ENDOWMENT - p.unconditional_contribution + group.s1_individual_share
+            p.s1_payoff = p.payoff
 
     for g in subsession.get_groups():
         subsession.s1_sum_contribution += g.s1_total_contribution
@@ -189,18 +207,70 @@ def session2_run1_payoffs(subsession: Subsession):
         players = group.get_players()
         print('this is the list of players:', players)
 
-        group.s2_run1_total_contribution = 0
-        for p in players:
-            group.s2_run1_total_contribution += group.s2_run1_total_contribution + p.s2_contribution_3
+        contributions = [p.s2_contribution_3 for p in players] # it creates one list for iteration
+        print('this is the list of contributions:', contributions)
+        group.s2_run1_total_contribution = sum(contributions)
+        print('this is the group contributions:', group.s2_run1_total_contribution)
+
+        # group.s2_run1_total_contribution = 0
+        # for p in players:
+        #     group.s2_run1_total_contribution += group.s2_run1_total_contribution + p.s2_contribution_3
 
         group.s2_run1_individual_share = group.s2_run1_total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
 
         for p in players:
             p.payoff = C.ENDOWMENT - p.s2_contribution_3 + group.s2_run1_individual_share
+            p.s2_run1_payoff = p.payoff
 
     for g in subsession.get_groups():
         subsession.s2_run1_sum_contribution += g.s2_run1_total_contribution
-        subsession.s2_run1_mean_contribution = subsession.s2_run1_total_contribution/8
+        subsession.s2_run1_mean_contribution = subsession.s2_run1_sum_contribution/8
+
+def s2rs_payoffs(subsession: Subsession):
+    for group in subsession.get_groups():
+
+        players = group.get_players()
+        print('this is the list of players:', players)
+
+        contributions = [p.s2r2_contribution for p in players] # it creates one list for iteration
+        print('this is the list of contributions:', contributions)
+        group.s2r2_total_contribution = sum(contributions)
+        print('this is the group contributions:', group.s2r2_total_contribution)
+
+        # group.s2r2_total_contribution = 0
+        # for p in players:
+        #     group.s2r2_total_contribution += group.s2r2_total_contribution + p.s2r2_contribution
+
+        group.s2r2_individual_share = group.s2r2_total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
+
+        for p in players:
+            p.payoff = C.ENDOWMENT - p.s2r2_contribution + group.s2r2_individual_share
+            p.s2r2_payoff = p.payoff
+
+    # for g in subsession.get_groups():
+    #     subsession.s2r2_sum_contribution += g.s2r2_individual_share
+    #     subsession.s2r2_mean_contribution = subsession.s2r2_sum_contribution/8
+
+def s2r3_payoffs(subsession: Subsession):
+    for group in subsession.get_groups():
+
+        players = group.get_players()
+        print('this is the list of players:', players)
+
+        contributions = [p.s2r3_contribution for p in players] # it creates one list for iteration
+        print('this is the list of contributions:', contributions)
+        group.s2r3_total_contribution = sum(contributions)
+        print('this is the group contributions:', group.s2r3_total_contribution)
+
+        # group.s2r3_total_contribution = 0
+        # for p in players:
+        #     group.s2r3_total_contribution += group.s2r3_total_contribution + p.s2r2_contribution
+
+        group.s2r3_individual_share = group.s2r3_total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
+
+        for p in players:
+            p.payoff = C.ENDOWMENT - p.s2r2_contribution + group.s2r3_individual_share
+            p.s2r3_payoff = p.payoff
 
 # group randomly
 def creating_session(subsession):
@@ -263,6 +333,15 @@ class Contribution_3(Page):
     form_model = 'player'
     form_fields = ['s2_contribution_3']
 
+class Contribution_4(Page):
+    form_model = 'player'
+    form_fields = ['s2r2_contribution']
+
+class Contribution_5(Page):
+    form_model = 'player'
+    form_fields = ['s2r3_contribution']
+
+
 # class Demographics(Page):
 #     form_model = 'player'
 #     form_fields = ['age', 'gender']
@@ -276,6 +355,18 @@ class Contribution_3(Page):
 class s1_ResultsWaitPage(WaitPage):
     wait_for_all_groups = True
     after_all_players_arrive = session1_payoffs
+
+class s2_run1_ResultsWaitPage(WaitPage):
+    wait_for_all_groups = True
+    after_all_players_arrive = session2_run1_payoffs
+
+class s2r2_ResultsWaitPage(WaitPage):
+    wait_for_all_groups = True
+    after_all_players_arrive = s2rs_payoffs
+
+class s2r3_ResultsWaitPage(WaitPage):
+    wait_for_all_groups = True
+    after_all_players_arrive = s2r3_payoffs
 
 class ResultsWaitPage(WaitPage):
     wait_for_all_groups = True
@@ -307,7 +398,30 @@ class Instruction2(Page):
 class Results1(Page):
     pass
 
+class Results2(Page):
+    pass
 
+class Results_s2rs(Page):
+    pass
+
+class Results_s2r3(Page):
+    pass
+
+class paymentinfo(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(total_earnings=(player.s1_payoff + player.s2_run1_payoff + player.s2r2_payoff + player.s2r3_payoff) * 0.15,
+                    earnings= player.s2_run1_payoff + player.s2r2_payoff + player.s2r3_payoff)
+
+class treatment2(Page):
+    pass
+
+class treatment3(Page):
+    pass
 
 page_sequence = [Introduction, Control_question, Introduction1, Contribution_1, Contribution_2, s1_ResultsWaitPage, Results1,
-                 Instruction2, treatment1, Contribution_3, ResultsWaitPage, Results]
+                 Instruction2,
+                 treatment1, Contribution_3, s2_run1_ResultsWaitPage, Results2,
+                 treatment2, Contribution_4, s2r2_ResultsWaitPage, Results_s2rs,
+                 treatment3, Contribution_5, s2r3_ResultsWaitPage, Results_s2r3,
+                 paymentinfo]
