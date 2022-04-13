@@ -25,7 +25,15 @@ class Subsession(BaseSubsession):
     sum_contribution = models.IntegerField(
         initial=0
     )
+    s1_sum_contribution = models.IntegerField(
+        initial=0
+    )
+    s2_run1_sum_contribution = models.IntegerField(
+        initial=0
+    )
     mean_contribution = models.FloatField()
+    s1_mean_contribution = models.FloatField()
+    s2_run1_mean_contribution = models.FloatField()
 
 
 class Group(BaseGroup):
@@ -97,11 +105,16 @@ class Player(BasePlayer):
         label='What is your gender?',
         widget=widgets.RadioSelect,
     )
+    # session 2 contribution
+    s2_contribution_3 = models.IntegerField(
+        min=0, max=C.ENDOWMENT, label="How much will you contribute to the project?"
+    )
     contribution = models.IntegerField(
         min=0, max=C.ENDOWMENT, label="How much will you contribute to the group account?"
     )
     earnings = models.IntegerField()
     total_earnings = models.IntegerField()
+    # status = models.IntegerField()
 
 #FUNCTIONS
 
@@ -145,6 +158,9 @@ def session1_payoffs(subsession: Subsession):
         for p in players:
             p.payoff = C.ENDOWMENT - p.unconditional_contribution + group.s1_individual_share
 
+    for g in subsession.get_groups():
+        subsession.s1_sum_contribution += g.s1_total_contribution
+        subsession.s1_mean_contribution = subsession.s1_sum_contribution/8
     # for g in subsession.get_groups():
     #     subsession.sum_contribution += g.total_contribution
 
@@ -166,6 +182,26 @@ def session1_payoffs(subsession: Subsession):
 #     for p in players:
 #         p.s1_payoff = C.ENDOWMENT - p.unconditional_contribution + group.s1_individual_share
 
+
+def session2_run1_payoffs(subsession: Subsession):
+    for group in subsession.get_groups():
+
+        players = group.get_players()
+        print('this is the list of players:', players)
+
+        group.s2_run1_total_contribution = 0
+        for p in players:
+            group.s2_run1_total_contribution += group.s2_run1_total_contribution + p.s2_contribution_3
+
+        group.s2_run1_individual_share = group.s2_run1_total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
+
+        for p in players:
+            p.payoff = C.ENDOWMENT - p.s2_contribution_3 + group.s2_run1_individual_share
+
+    for g in subsession.get_groups():
+        subsession.s2_run1_sum_contribution += g.s2_run1_total_contribution
+        subsession.s2_run1_mean_contribution = subsession.s2_run1_total_contribution/8
+
 # group randomly
 def creating_session(subsession):
     subsession.group_randomly()
@@ -174,20 +210,38 @@ def creating_session(subsession):
 # session 1 random payoff
 
 # PAGES
-class MyPage(Page):
-    form_model = 'player'
-    form_fields = ['contribution']
+# class MyPage(Page):
+#     form_model = 'player'
+#     form_fields = ['contribution']
+#
+#     def vars_for_template(player):
+#         v = -1
+#         print(player.subsession.round_number)
+#         if player.subsession.round_number > 1:
+#             s = player.subsession.in_round(player.subsession.round_number-1)
+#             v = s.sum_contribution
+#
+#         return dict(
+#             sum_contribution = v
+#         )
 
-    def vars_for_template(player):
-        v = -1
-        print(player.subsession.round_number)
-        if player.subsession.round_number > 1:
-            s = player.subsession.in_round(player.subsession.round_number-1)
-            v = s.sum_contribution
 
-        return dict(
-            sum_contribution = v
-        )
+class treatment1(Page):
+    pass
+    # form_model = 'player'
+    # form_fields = ['unconditional_contribution']
+
+    # def vars_for_template(player):
+    #     v = 0
+    #     print(player.subsession.round_number)
+    #     if player.subsession.round_number > 1:
+    #         s = player.subsession.in_round(player.subsession.round_number)
+    #         print('this is ' + s)
+    #         v = s.s1_mean_contribution
+    #
+    #     return dict(
+    #         s1_mean_contribution = v
+    #     )
 
 class Control_question(Page):
     form_model = 'player'
@@ -205,6 +259,9 @@ class Contribution_2(Page):
                    'c_contribution_18', 'c_contribution_19', 'c_contribution_20']
 
 
+class Contribution_3(Page):
+    form_model = 'player'
+    form_fields = ['s2_contribution_3']
 
 # class Demographics(Page):
 #     form_model = 'player'
@@ -244,9 +301,13 @@ class Introduction(Page):
 class Introduction1(Page):
     pass
 
+class Instruction2(Page):
+    pass
+
 class Results1(Page):
     pass
 
 
+
 page_sequence = [Introduction, Control_question, Introduction1, Contribution_1, Contribution_2, s1_ResultsWaitPage, Results1,
-                 MyPage, ResultsWaitPage, Results]
+                 Instruction2, treatment1, Contribution_3, ResultsWaitPage, Results]

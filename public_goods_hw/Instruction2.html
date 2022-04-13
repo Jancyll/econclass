@@ -1,0 +1,48 @@
+{{ block title }}
+    Session Two
+{{ endblock }}
+{{ block content }}
+
+    <p>
+        We will now conduct another experiment. This experiment lasts 10 periods, in which you
+        and the other group members have to make decisions. As in the other experiment, every
+        group consists of {{ C.PLAYERS_PER_GROUP }} people. The formation of the group changes at random after every period.
+        So your group consists of different people in all periods. The whole experiment is
+        finished after these 10 periods,.
+    </p>
+
+    <p>
+        The decision situation is the same as s the unconditional contribution of the previous experiment.
+        Each member of the group has to decide about the usage of the 20
+        tokens. You can put these 20 tokens into your private account or you can invest them fully or
+        partially to the project. Each token you do not invest into the project is automatically placed
+        into your private account. Your income will be determined in the same way as before.
+        Reminder:
+    </p>
+    <p>
+        Income in a round = (20 - tokens you contribute) + 0.4 * total contribution to the project
+    </p>
+    <p>
+        The decision screen, which you will see in every period, looks like this:
+
+        <img src="{{ static 'task3.PNG' }}"/>
+    </p>
+
+    <p>
+        You need to decide on your contribution to the project, that is, you have to decide
+        how many of the 20 tokens you want to contribute to the project, and how many tokens
+        you want to put into your private account. This decision is the same as the unconditional
+        contribution of the previous experiment. You only make unconditional decisions in this
+        experiment. There is no contribution table.
+    </p>
+    <p>
+        For each run you will receive payoff and feedback information after all the group members have made their decisions.
+        After session two is over, the whole experiment is finished and you will receive:
+        <ul> + your income from session one </ul>
+        <ul> + your income from session two (including every period of your decision) </ul>
+        <ul> = total income from both experiments </ul>
+        <ul> + participation fee </ul>
+    </p>
+    {{ next_button }}
+
+{{ endblock }}
