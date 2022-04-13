@@ -1,0 +1,25 @@
+{{ block title }}Results in {{ endblock }}
+{{ block content }}
+
+    <p>
+        You are in Group {{ group.id_in_subsession }} this run,
+        and your Group ID is {{ player.id_in_group }}.
+
+    </p>
+
+    <p>
+        You started with an endowment of {{ C.ENDOWMENT }}
+        of which you contributed {{ player.contribution }}.
+
+    </p>
+    <p>
+        Your group contributed {{ group.total_contribution }},
+        resulting in an individual share of {{ group.individual_share }}.
+    </p>
+    <p>
+        Your payoff in this run is {{ player.payoff }}.
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}

@@ -93,7 +93,7 @@ SESSION_CONFIGS = [
         name='volunteer_dilemma',
         display_name="volunteer_dilemma",
         app_sequence=['volunteer_dilemma'],
-        num_demo_participants=2,
+        num_demo_participants=3,
     ),
 ]
 

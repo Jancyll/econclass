@@ -1,0 +1,37 @@
+{{ block title }}Control Questions{{ endblock }}
+{{ block content }}
+
+    <p>
+        Please answer the following control questions. They will help you to gain an understanding of the calculation of
+        your income, which varies with your decision about how you distribute your 20 tokens.
+    </p>
+
+    <p>
+        1. Each group member has 20 tokens. Suppose that the other three members of your group contribute nothing to the project.
+        {{ formfield 'control_1' }}
+        {{ formfield 'control_2' }}
+    </p>
+
+<br>
+<br>
+
+    <p>
+        2. Each group member has 20 tokens. Suppose that the other three members contribute 12 tokens in total to the
+        project (excluding your own contribution).
+        {{ formfield 'control_3' }}
+        {{ formfield 'control_4' }}
+    </p>
+
+
+<br>
+<br>
+
+    <p>
+        3. Each group member has 20 tokens. Suppose that you contribute five tokens to the project.
+        {{ formfield 'control_5' }}
+        {{ formfield 'control_6' }}
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}

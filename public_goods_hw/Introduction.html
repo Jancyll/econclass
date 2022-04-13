@@ -5,18 +5,44 @@
 {{ block content }}
 
     <p>
-        You will be grouped randomly and anonymously with
-        another
-        participants.
+        Welcome and thank you for participating in this experiment. Please turn off your phones and do not talk to other
+        participants. If you have a question, please raise your hand, and the experimenter will come and answer you privately.
     </p>
     <p>
-        Each of you decides independently and simultaneously whether you will
-        volunteer or not. If at least one of you volunteers, everyone will get
-     . However, the volunteer(s) will
-        pay . If no one
-        volunteers, everyone receives nothing.
+        In this experiment, you can earn money except for the participation fees. Your final earnings will depend on your
+        own decisions and the decisions of other participants.
+        During the experiment, your earnings will express in tokens that will be converted at the end of the experiment in
+        dollars: 1 Token = $0.15.
+    </p>
+    <p>
+        You will be randomly and privately assigned to a group of {{ C.PLAYERS_PER_GROUP }}.
+        In each round, you will receive {{ C.ENDOWMENT }} tokens and you must decide how many tokens to contribute in a
+        project; you can contribute any number between 0 and {{ C.ENDOWMENT }} tokens. Your income in each round
+        consists of the number of tokens you kept for yourself plus 0.4 times the total number of tokens contributed to
+        the project. That is:
     </p>
 
+    <p>
+        Income in a round = (20 - tokens you contribute) + 0.4 * total contribution to the project
+    </p>
+
+    <p>
+<!--        For each token you put-->
+<!--        on your private account, you will receive exactly one token. The group account produces 1.6 tokens for each token-->
+<!--        contributed, and all members of the group receive the same return from the group account. -->
+        This is because the project produces 1.6 tokens for each token contributed, and all members of the group receive
+        the same return from the project (1.6/4 = 0.4).
+        For example, if the total contribution is 60 tokens, then you and all other members of the group receive
+        60 × 0.4 = 24 tokens from the project. If you had contributed 15 tokens, then your income in that round would be
+        (20 − 15) + 24 = 29 tokens. If, on the other hand, you had contributed 5 tokens to the project, your income in that
+        round would be (20 − 5) + 24 = 39 tokens.
+    </p>
+
+    <p>
+        Your earnings from private account are independent of the decisions of other group members. Your earnings from
+        the project depend on the decisions of all group members. No matter how many tokens you contribute to the project,
+        you will always receive your share equally.
+    </p>
     {{ formfields }}
 
     {{ next_button }}

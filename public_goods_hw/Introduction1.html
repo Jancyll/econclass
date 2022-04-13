@@ -1,0 +1,58 @@
+{{ block title }}
+    Session One
+{{ endblock }}
+{{ block content }}
+
+    <p>
+        The experiment includes the decision situation just described to you. As you know, you will have 20 tokens at
+        your disposal. You can put them into a private account or you can invest them into a project. Each subject has to
+        make two types of decisions in session one, which we will refer to below as the
+        “unconditional contribution” and “contribution table”. This session
+        will only be conducted once.
+    </p>
+    <ul>
+        <li>You decide how many of the 20 tokens you want to invest into the project in the unconditional contribution.
+        You will indicate your contribution in the following screen: </li>
+
+        <img src="{{ static 'task1.PNG' }}"/>
+        <br>
+        <br>
+        <li>Your second task is to fill in a “contribution table” where you indicate how many tokens
+        you want to contribute to the project for each possible average contribution of the
+        other group members (rounded to the next integer). You can condition your contribution
+        on that of the other group members. This will be immediately clear to you if you take a
+        look at the following table. This table will be presented to you in the experiment (The full table will include
+            average contribution from 0 to 20):  </li>
+
+        <img src="{{ static 'task2.PNG' }}"/>
+
+        The numbers are the possible (rounded) average contributions of the other group members to
+        the project. You simply have to insert how many tokens you will contribute to the project into
+        each input box – conditional on the indicated average contribution. You have to make an
+        entry into each input box. For example, you will have to indicate how much you contribute
+        to the project if the others contribute 0 tokens to the project, how much you contribute if the
+        others contribute 1, 2, or 3 tokens, etc. You can insert any integer numbers from 0 to 20 in
+        each input box.
+    </ul>
+
+    <p>
+        After all participants of the experiment have made an unconditional contribution and have
+        filled in their contribution table, a random mechanism will select a group member from every
+        group. Only the contribution table will be the payoff-relevant decision for the randomly
+        determined subject. Only the unconditional contribution will be the payoff-relevant
+        decision for the other three group members not selected by the random mechanism. For example, assume that the random mechanism selects you. This implies that your
+        payoff-relevant decision will be your contribution table. The unconditional contribution is the
+        payoff-relevant decision for the other three group members. Assume that the random mechanism did not select you,
+        implying that the unconditional contribution is taken as the payoff-relevant decision for you and two other
+        group members.
+    </p>
+
+    <p>
+        You obviously do not know whether the random mechanism will select you when you make your
+        unconditional contribution and when you fill in the contribution table. You will therefore
+        have to think carefully about both types of decisions because both can become relevant for
+        you.
+    </p>
+    {{ next_button }}
+
+{{ endblock }}
